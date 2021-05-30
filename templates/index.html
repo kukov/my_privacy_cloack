@@ -1,11 +1,27 @@
 <html>
 <head>
-    <title>File Upload</title>
+    <title>My Privacy Cloak</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
+    <h1>My Privacy Cloak</h1>
     <form id="myForm">
-        <input id="image-file" type="file" /></body>
-        <button type="submit">Upload</button>
+        <div class="row">
+            <div class="column">
+                <img id="original" src="#" alt="your image" class="img-fluid"/>
+            </div>
+            <div class="column">
+                <img id ="image" alt="cloaked image" class="img-fluid"/>
+            </div>
+        </div>
+
+        <!-- <img id="original" src="#" alt="your image" class="img-fluid"/>
+        <img id ="image" alt="cloaked image" class="img-fluid"/> -->
+        <input id="image-file" type="file" class="form-control-file"/>
+        <button type="submit" class="btn btn-primary mb-2">Cloak Me!</button>
     </form>
 
     <img id ="image"/>
@@ -14,6 +30,13 @@
         const myForm = document.getElementById('myForm');
         const imgFile = document.getElementById('image-file');
         const image = document.getElementById("image");
+
+        imgFile.onchange = evt => {
+        const [file] = imgFile.files
+        if (file) {
+            original.src = URL.createObjectURL(file)
+        }
+        }
 
 
 

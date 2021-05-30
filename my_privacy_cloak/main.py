@@ -59,7 +59,7 @@ def get_cloked_image(image_uuid:str, response: Response):
     if os.path.exists(folder_path):
         image_path = os.path.join(current_path,IMAGES_FOLDER, image_uuid, image_uuid + "_cloaked" + ".jpeg")
         if os.path.exists(image_path):
-            FileResponse(image_path)
+            return FileResponse(image_path)
         else:
             response.status_code = status.HTTP_202_ACCEPTED
             return {"status": "running",

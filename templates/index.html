@@ -3,6 +3,102 @@
     <title>File Upload</title>
 </head>
 <body>
-    <input id="image-file" type="file" /></body>
-</html>
+    <form id="myForm">
+        <input id="image-file" type="file" /></body>
+        <button type="submit">Upload</button>
+    </form>
 
+    <img id ="image"/>
+
+    <script>
+        const myForm = document.getElementById('myForm');
+        const imgFile = document.getElementById('image-file');
+        const image = document.getElementById("image");
+
+
+
+        // Converts any given blob into a base64 encoded string.
+        function convertBlobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = () => {
+            resolve(reader.result);
+            };
+            reader.readAsDataURL(blob);
+
+        });
+
+        }
+
+
+
+        myForm.addEventListener("submit", e => {
+            e.preventDefault();
+
+            const endpoint = "upload_image";
+            const formData = new FormData();
+
+            console.log(imgFile.files);
+            
+            formData.append('image', imgFile.files[0]);
+
+            async function fetchText() {
+                let response = await fetch(endpoint, {
+                method: "post",
+                body: formData});
+                let data = await response.json();
+                
+                console.log(data['id']);
+
+                
+
+
+                while(true) {
+                    var fetchResult = await fetch("/get_cloaked_image/"+ data['id']);
+                    
+                    if(fetchResult.status != 202){
+                        console.log(fetchResult.status);
+                        var fetchResultData = await fetchResult.blob();
+                        break;
+                    }
+                    else{
+                        var fetchResultData = await fetchResult.json();
+                        console.log(fetchResultData);
+                    }
+
+
+                    await new Promise(r => setTimeout(r, 10000));
+
+                    };
+
+                // do {
+                // let fetchResult = await fetch("/get_cloaked_image/"+ data['id']);
+                // let fetchResultData = await fetchResult.json();
+                // console.log(fetchResultData);
+                // } while(fetchResult.status === 202);
+
+                if (fetchResult.status === 200){
+                    image.src = await convertBlobToBase64(fetchResultData);
+                }
+
+            
+                };
+
+            fetchText();
+
+
+        });
+
+        
+
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>
